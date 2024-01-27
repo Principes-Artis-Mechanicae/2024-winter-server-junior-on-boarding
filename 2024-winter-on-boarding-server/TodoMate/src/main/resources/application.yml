@@ -2,9 +2,10 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/TodoMate
+    url: jdbc:mysql://localhost:3306/TodoMate
     username: root
     password: "1234"
+
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
@@ -14,3 +15,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  jwt:
+    secret: VY8bBm7p93fC2SZJ6bZBeJHQZKvHfHTVJhdXjC9TGg8KLYooLXL4SvHcGfAh

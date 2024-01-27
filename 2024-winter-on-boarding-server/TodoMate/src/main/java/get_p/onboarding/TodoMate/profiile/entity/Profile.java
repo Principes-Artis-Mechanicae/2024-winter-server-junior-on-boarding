@@ -2,6 +2,7 @@ package get_p.onboarding.TodoMate.profiile.entity;
 
 import get_p.onboarding.TodoMate.goal.entity.Goal;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.util.List;
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "profile_id",unique = true)
+    @Column(name = "profile_id")
     private Long id;
 
     private String name;
@@ -25,6 +26,7 @@ public class Profile {
     private String photo;         //photo path 설정
 
     @Column(unique = true)
+    @Email
     private String email;
     private String password;
 
