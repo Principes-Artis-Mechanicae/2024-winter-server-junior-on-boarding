@@ -30,16 +30,20 @@ public class Profile {
     private String email;
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Goal> goals = new ArrayList<>();
 
     @Builder
-    public Profile(String name, String introduction, String photo, String email, String password, List<Goal> goals) {
+    public Profile(String name, String introduction, String photo, String email, String password, Role role, List<Goal> goals) {
         this.name = name;
         this.introduction = introduction;
         this.photo = photo;
         this.email = email;
         this.password = password;
+        this.role = role;
         this.goals = goals;
     }
 }

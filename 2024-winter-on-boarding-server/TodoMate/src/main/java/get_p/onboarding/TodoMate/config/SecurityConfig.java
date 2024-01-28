@@ -7,13 +7,14 @@ import get_p.onboarding.TodoMate.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -25,42 +26,50 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtUtil jwtUtil;
     private final ProfileRepository profileRepository;
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+
+    public LoginFilter loginFilter() throws Exception {
+        return new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil,profileRepository);
     }
+
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         //csrf disable
         http
-                .csrf((auth) -> auth.disable());
+                .csrf(AbstractHttpConfigurer::disable);
 
         //form login disable
         http
-                .formLogin((auth) -> auth.disable());
+                .formLogin(AbstractHttpConfigurer::disable);
 
         //http basic disable
         http
-                .httpBasic((auth) -> auth.disable());
+                .httpBasic(AbstractHttpConfigurer::disable);
 
         //경로별 인가작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers("/login","/","/register").permitAll()
+                    .requestMatchers("/api/v1/auth/**","/login").permitAll()
                     .anyRequest().authenticated());
 
         //JwtFilter
         http
-                .addFilterBefore(new JwtFilter(jwtUtil,profileRepository),LoginFilter.class);
+                .addFilterBefore(new JwtFilter(jwtUtil,profileRepository), LoginFilter.class);
 
         //로그인 필터
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class);
 
         //세션 설정
         http

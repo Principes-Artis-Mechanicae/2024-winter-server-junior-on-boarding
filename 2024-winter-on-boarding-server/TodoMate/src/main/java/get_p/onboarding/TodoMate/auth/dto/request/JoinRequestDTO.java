@@ -3,6 +3,7 @@ package get_p.onboarding.TodoMate.auth.dto.request;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import get_p.onboarding.TodoMate.profiile.entity.Profile;
+import get_p.onboarding.TodoMate.profiile.entity.Role;
 import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,5 +28,8 @@ public class JoinRequestDTO {
 
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String role;
 
 }

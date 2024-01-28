@@ -1,5 +1,6 @@
 package get_p.onboarding.TodoMate.utils;
 
+import get_p.onboarding.TodoMate.profiile.entity.Role;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,13 +23,19 @@ public class JwtUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email",String.class);
     }
 
+    public String getRole(String token) {
+
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+    }
+
     public Boolean isExpired(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String email, Long expiredMs) {
+    public String createJwt(String email, Role role, Long expiredMs) {
         return Jwts.builder()
                 .claim("email", email)
+                .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+ expiredMs))
                 .signWith(secretKey)

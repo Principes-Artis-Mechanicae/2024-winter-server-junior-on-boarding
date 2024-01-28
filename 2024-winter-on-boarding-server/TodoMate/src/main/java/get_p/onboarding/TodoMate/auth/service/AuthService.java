@@ -4,7 +4,9 @@ import get_p.onboarding.TodoMate.auth.dto.request.JoinRequestDTO;
 import get_p.onboarding.TodoMate.auth.dto.request.LoginRequestDTO;
 import get_p.onboarding.TodoMate.auth.dto.response.LoginResponseDTO;
 import get_p.onboarding.TodoMate.profiile.entity.Profile;
+import get_p.onboarding.TodoMate.profiile.entity.Role;
 import get_p.onboarding.TodoMate.profiile.repository.ProfileRepository;
+import get_p.onboarding.TodoMate.security.details.CustomUserDetails;
 import get_p.onboarding.TodoMate.security.filter.LoginFilter;
 import get_p.onboarding.TodoMate.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +29,6 @@ public class AuthService {
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-    private final LoginFilter loginFilter;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     //회원가입 등록
@@ -42,14 +44,18 @@ public class AuthService {
     }
 
     public String login(String email, String password) throws AuthenticationException {
+        Profile profile = profileRepository.findByEmail(email);
+        UserDetails userDetails = new CustomUserDetails(profile);
+
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(email, password);
+                new UsernamePasswordAuthenticationToken(email, password,userDetails.getAuthorities());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        String token = jwtUtil.createJwt(authentication.getName(),60*60*10L);
+        String token = jwtUtil.createJwt(authentication.getName(),profile.getRole(),60*60*10L);
 
         return token;
     }
+
     //JoinRequestDTO 로부터 Entity 생성
     private Profile createProfileFromRequest(JoinRequestDTO joinRequestDTO) {
         return Profile.builder()
@@ -57,6 +63,7 @@ public class AuthService {
                 .introduction(joinRequestDTO.getIntroduction())
                 .email(joinRequestDTO.getEmail())
                 .password(passwordEncoder.encode(joinRequestDTO.getPassword()))
+                .role(Role.valueOf(joinRequestDTO.getRole()))
                 .build();
     }
 }

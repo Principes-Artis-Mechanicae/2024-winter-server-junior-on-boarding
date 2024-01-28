@@ -48,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
         //Details에 객체 정보 담기
         CustomUserDetails customUserDetails = new CustomUserDetails(profile);
         //인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails,null,customUserDetails.getAuthorities());
+        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails,null, customUserDetails.getAuthorities());
         //세션에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);
         filterChain.doFilter(request,response);

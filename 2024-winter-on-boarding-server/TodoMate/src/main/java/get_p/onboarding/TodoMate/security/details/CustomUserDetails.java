@@ -15,12 +15,19 @@ public class CustomUserDetails implements UserDetails {
 
     private final Profile profile;
 
-    //권한 "ROLE_USER"로 고정
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return authorities;
+
+        Collection<GrantedAuthority> collection = new ArrayList<>();
+
+        collection.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return profile.getRole().name();
+            }
+        });
+
+        return collection;
     }
 
 
