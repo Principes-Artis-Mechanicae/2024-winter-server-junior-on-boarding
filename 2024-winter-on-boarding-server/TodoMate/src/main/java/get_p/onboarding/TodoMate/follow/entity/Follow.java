@@ -2,13 +2,14 @@ package get_p.onboarding.TodoMate.follow.entity;
 
 import get_p.onboarding.TodoMate.profiile.entity.Profile;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Follow {
 
     @Id
@@ -16,11 +17,11 @@ public class Follow {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Profile.class)
-    @JoinColumn(name = "profile_id")
+    @JoinColumn(name = "follower_id")
     private Profile follower;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Profile.class)
-    @JoinColumn(name = "profile_id")
+    @JoinColumn(name = "following_id")
     private Profile following;
 
     @Builder
