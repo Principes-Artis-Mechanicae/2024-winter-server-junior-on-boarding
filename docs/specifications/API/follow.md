@@ -44,7 +44,7 @@ Authorization: Bearer ACCESS_TOKEN
       "email": "user@example.com",
       "username": "John Doe",
       "description": "My name is John Doe.",
-      "profileImageUri": "/storage/images/123.png"
+      "MemberImageUri": "/storage/images/123.png"
     },
   ]
 }

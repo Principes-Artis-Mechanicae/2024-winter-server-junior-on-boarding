@@ -1,6 +1,6 @@
 package get_p.onboarding.TodoMate.goal.entity;
 
-import get_p.onboarding.TodoMate.profiile.entity.Profile;
+import get_p.onboarding.TodoMate.member.entity.Member;
 import get_p.onboarding.TodoMate.todo.entity.Todo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -26,18 +26,19 @@ public class Goal {
     @Enumerated(value = EnumType.STRING)
     private Visibility visibility;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Profile.class)
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Member.class)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Todo> todos = new ArrayList<>();
 
     @Builder
-    public Goal(String title, Visibility visibility, Profile profile, List<Todo> todos) {
+    public Goal(Long id,String title, Visibility visibility, Member member, List<Todo> todos) {
+        this.id = id;
         this.title = title;
         this.visibility = visibility;
-        this.profile = profile;
+        this.member = member;
         this.todos = todos;
     }
 }

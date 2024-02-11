@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -20,7 +21,7 @@ public class Todo {
     private Long id;
 
     private String contents;
-    private Date date;
+    private LocalDate date;
     private Boolean isDone;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Goal.class)
@@ -28,7 +29,7 @@ public class Todo {
     private Goal goal;
 
     @Builder
-    public Todo(String contents, Date date, Boolean isDone, Goal goal) {
+    public Todo(String contents, LocalDate date, Boolean isDone, Goal goal) {
         this.contents = contents;
         this.date = date;
         this.isDone = isDone;

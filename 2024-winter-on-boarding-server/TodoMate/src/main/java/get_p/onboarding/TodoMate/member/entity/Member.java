@@ -1,4 +1,4 @@
-package get_p.onboarding.TodoMate.profiile.entity;
+package get_p.onboarding.TodoMate.member.entity;
 
 import get_p.onboarding.TodoMate.goal.entity.Goal;
 import jakarta.persistence.*;
@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import get_p.onboarding.TodoMate.profile.entity.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,11 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Profile {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "profile_id")
+    @Column(name = "member_id")
     private Long id;
-
-    private String name;
-
-    private String introduction;  //50글자 제한하기
-    private String photo;         //photo path 설정
 
     @Column(unique = true)
     @Email
@@ -33,17 +29,18 @@ public class Profile {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Goal> goals = new ArrayList<>();
 
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Profile profile;
+
     @Builder
-    public Profile(String name, String introduction, String photo, String email, String password, Role role, List<Goal> goals) {
-        this.name = name;
-        this.introduction = introduction;
-        this.photo = photo;
+    public Member(String email, String password, Role role, List<Goal> goals, Profile profile) {
         this.email = email;
         this.password = password;
         this.role = role;
         this.goals = goals;
+        this.profile = profile;
     }
 }

@@ -1,20 +1,21 @@
 package get_p.onboarding.TodoMate.security.details;
 
-import get_p.onboarding.TodoMate.profiile.entity.Profile;
+import get_p.onboarding.TodoMate.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private final Profile profile;
+    private final Member Member;
 
+    public Member getMember() {
+        return this.Member;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
@@ -23,7 +24,7 @@ public class CustomUserDetails implements UserDetails {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return profile.getRole().name();
+                return Member.getRole().name();
             }
         });
 
@@ -33,12 +34,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return profile.getPassword();
+        return Member.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return profile.getEmail();
+        return Member.getEmail();
     }
 
     @Override

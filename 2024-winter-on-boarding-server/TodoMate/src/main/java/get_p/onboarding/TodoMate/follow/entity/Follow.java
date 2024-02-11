@@ -1,6 +1,6 @@
 package get_p.onboarding.TodoMate.follow.entity;
 
-import get_p.onboarding.TodoMate.profiile.entity.Profile;
+import get_p.onboarding.TodoMate.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,18 +14,19 @@ public class Follow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "follow_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Profile.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Member.class)
     @JoinColumn(name = "follower_id")
-    private Profile follower;
+    private Member follower;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Profile.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Member.class)
     @JoinColumn(name = "following_id")
-    private Profile following;
+    private Member following;
 
     @Builder
-    public Follow(Profile follower, Profile following) {
+    public Follow(Member follower, Member following) {
         this.follower = follower;
         this.following = following;
     }

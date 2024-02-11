@@ -1,6 +1,6 @@
 package get_p.onboarding.TodoMate.config;
 
-import get_p.onboarding.TodoMate.profiile.repository.ProfileRepository;
+import get_p.onboarding.TodoMate.member.repository.MemberRepository;
 import get_p.onboarding.TodoMate.security.filter.JwtFilter;
 import get_p.onboarding.TodoMate.security.filter.LoginFilter;
 import get_p.onboarding.TodoMate.utils.JwtUtil;
@@ -25,7 +25,7 @@ public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtUtil jwtUtil;
-    private final ProfileRepository profileRepository;
+    private final MemberRepository MemberRepository;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -33,7 +33,7 @@ public class SecurityConfig {
     }
 
     public LoginFilter loginFilter() throws Exception {
-        return new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil,profileRepository);
+        return new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil,MemberRepository);
     }
 
 
@@ -65,7 +65,7 @@ public class SecurityConfig {
 
         //JwtFilter
         http
-                .addFilterBefore(new JwtFilter(jwtUtil,profileRepository), LoginFilter.class);
+                .addFilterBefore(new JwtFilter(jwtUtil,MemberRepository), LoginFilter.class);
 
         //로그인 필터
         http

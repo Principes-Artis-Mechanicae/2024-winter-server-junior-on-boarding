@@ -1,6 +1,6 @@
 package get_p.onboarding.TodoMate.utils;
 
-import get_p.onboarding.TodoMate.profiile.entity.Role;
+import get_p.onboarding.TodoMate.member.entity.Role;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

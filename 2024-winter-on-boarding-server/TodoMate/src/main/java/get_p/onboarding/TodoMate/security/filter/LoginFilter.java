@@ -1,7 +1,7 @@
 package get_p.onboarding.TodoMate.security.filter;
 
-import get_p.onboarding.TodoMate.profiile.entity.Role;
-import get_p.onboarding.TodoMate.profiile.repository.ProfileRepository;
+import get_p.onboarding.TodoMate.member.entity.Role;
+import get_p.onboarding.TodoMate.member.repository.MemberRepository;
 import get_p.onboarding.TodoMate.security.details.CustomUserDetails;
 import get_p.onboarding.TodoMate.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -9,13 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Collection;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final ProfileRepository profileRepository;
+    private final MemberRepository MemberRepository;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -34,12 +34,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String email = obtainUsername(request);
         String password = obtainPassword(request);
         log.info(password);
-        UserDetails userDetails = new CustomUserDetails(profileRepository.findByEmail(email));
+        UserDetails userDetails = new CustomUserDetails(MemberRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("계정을 찾을 수 없습니다.")));
         log.info(userDetails.getPassword());
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
         log.info(authToken.getName());
         log.info(authToken.getAuthorities().toString());
-        return authenticationManager.authenticate(authToken);
+        Authentication authentication = authenticationManager.authenticate(authToken);
+        log.info("!123125edsf");
+        log.info(authentication.getName());
+        return authentication;
     }
 
     @Override

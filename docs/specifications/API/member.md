@@ -47,7 +47,7 @@ Authorization: Bearer ACCESS_TOKEN
     "email": "user@example.com",
     "username": "John Doe",
     "description": "My name is John Doe.",
-    "profileImageUri": "/storage/images/123.png"
+    "MemberImageUri": "/storage/images/123.png"
   }
 }
 ```
@@ -58,7 +58,7 @@ Authorization: Bearer ACCESS_TOKEN
 
 | URI | Method | 설명 |
 |-----|--------|------|
-|`/api/members/me/profile`|POST|프로필을 등록한다.|
+|`/api/members/me/Member`|POST|프로필을 등록한다.|
 
 **Request Header**
 
@@ -72,7 +72,7 @@ Authorization: Bearer ACCESS_TOKEN
 { 
   "username": "John Doe",
   "description": "My name is John Doe.",
-  "profileImageUri": "/storage/images/123.png"
+  "MemberImageUri": "/storage/images/123.png"
 }
 ```
 
@@ -102,7 +102,7 @@ Authorization: Bearer ACCESS_TOKEN
 
 | URI | Method | 설명 |
 |-----|--------|------|
-|`/api/members/me/profile`|PUT|프로필을 수정한다.|
+|`/api/members/me/Member`|PUT|프로필을 수정한다.|
 
 **Request Header**
 
@@ -116,7 +116,7 @@ Authorization: Bearer ACCESS_TOKEN
 { 
   "username": "John Doe John Doe",
   "description": "My name is John Doe John Doe.",
-  "profileImageUri": "/storage/images/123.png"
+  "MemberImageUri": "/storage/images/123.png"
 }
 ```
 
