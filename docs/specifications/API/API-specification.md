@@ -13,8 +13,8 @@
 |-----|--------|------|
 |`/api/members?email={email}`|GET|회원 검색|
 |`/api/members/{memberId}`|GET|회원 상세 검색|
-|`/api/members/me/profile`|POST|프로필 등록|
-|`/api/members/me/profile`|PUT|프로필 수정|
+|`/api/members/me/Member`|POST|프로필 등록|
+|`/api/members/me/Member`|PUT|프로필 수정|
 
 ## [팔로우](./follow.md)
 

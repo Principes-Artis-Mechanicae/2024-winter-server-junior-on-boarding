@@ -17,14 +17,11 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ApiUtil.ApiSuccessResult<Long> signup(
             @Valid @RequestBody JoinRequestDTO requestDto
     ) {
         return ApiUtil.success(authService.register(requestDto));
     }
-
-//    @PostMapping("/login")
-//    public
 
 }

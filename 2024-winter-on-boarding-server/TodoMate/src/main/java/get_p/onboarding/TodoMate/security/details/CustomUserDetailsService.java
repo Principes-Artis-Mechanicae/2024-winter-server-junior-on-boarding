@@ -1,7 +1,7 @@
 package get_p.onboarding.TodoMate.security.details;
 
-import get_p.onboarding.TodoMate.profiile.entity.Profile;
-import get_p.onboarding.TodoMate.profiile.repository.ProfileRepository;
+import get_p.onboarding.TodoMate.member.entity.Member;
+import get_p.onboarding.TodoMate.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final ProfileRepository profileRepository;
+    private final MemberRepository MemberRepository;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Profile profile = profileRepository.findByEmail(username);
-        CustomUserDetails customUserDetails = new CustomUserDetails(profile);
+    public UserDetails loadUserByUsername(String username) {
+        Member Member = MemberRepository.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다."));
+        CustomUserDetails customUserDetails = new CustomUserDetails(Member);
 
         return customUserDetails;
     }
