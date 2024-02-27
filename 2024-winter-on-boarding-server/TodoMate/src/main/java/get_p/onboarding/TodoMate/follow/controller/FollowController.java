@@ -30,7 +30,9 @@ public class FollowController {
     public ResponseEntity<String> followMember(@PathVariable Long memberId) {
         try {
             followService.followMember(memberId);
-            return ResponseEntity.ok("팔로우가 성공적으로 등록되었습니다.");
+            return ResponseEntity
+                    .status(201)
+                    .body("팔로우 성공");
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
@@ -42,7 +44,9 @@ public class FollowController {
     public ResponseEntity<String> unfollowMember(@PathVariable Long memberId) {
         try {
             followService.unfollowMember(memberId);
-            return ResponseEntity.ok("언팔로우가 성공적으로 처리되었습니다.");
+            return ResponseEntity
+                    .status(204)
+                    .body("언팔로우 성공");
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
